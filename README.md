@@ -5,30 +5,33 @@ A full-stack event ticketing system built with Node.js and MySQL, featuring tran
 ## What This Is
 
 This web application supports an end-to-end ticketing workflow:
-- Browse and filter events
-- Purchase tickets with automatic seat allocation
-- View customer purchase history
-- Check in tickets using QR codes with duplicate prevention
-- Generate sales analytics and reporting
-- Batch update customer loyalty tiers
-- Manage event status (scheduled, cancelled, completed)
+
+* Browse and filter events
+* Purchase tickets with automatic seat allocation
+* View customer purchase history
+* Check in tickets using QR codes with duplicate prevention
+* Generate sales analytics and reporting
+* Batch update customer loyalty tiers
+* Manage event status (scheduled, cancelled, completed)
 
 The backend is powered by MySQL and uses JOINs, subqueries, GROUP BY aggregations, HAVING filters, and transactions to ensure data integrity.
 
 ## Getting Started
 
 ### Prerequisites
-- Node.js (v14 or newer)
-- MySQL running locally
-- Database dump located in `DUMP/`
+
+* Node.js (v14 or newer)
+* MySQL running locally
+* Database dump located in `DUMP/`
 
 ### Setup & Run
 
 **1. Clone and navigate to the project**
+
 ```bash
 git clone https://github.com/mgowrysh/event-ticketing-system.git
 cd event-ticketing-system
-````
+```
 
 **2. Install dependencies**
 
@@ -68,8 +71,6 @@ npm start
 
 **6. Open the application**
 
-Navigate to:
-
 ```
 http://localhost:3000
 ```
@@ -79,44 +80,37 @@ http://localhost:3000
 ### 1. Browse Events
 
 Search and filter events by venue, status, or date range, including seat availability.
-
-* **SQL:** JOINs, WHERE filters, ORDER BY
+**SQL:** JOINs, WHERE filters, ORDER BY
 
 ### 2. Purchase Tickets
 
 Purchase tickets with automatic seat allocation and QR code generation.
-
-* **SQL:** Transactions with INSERT/UPDATE and availability validation
+**SQL:** Transactions with INSERT/UPDATE and availability validation
 
 ### 3. Customer Purchase History
 
 View complete purchase history with spending statistics.
-
-* **SQL:** Multi-table JOINs, GROUP BY, COUNT, SUM
+**SQL:** Multi-table JOINs, GROUP BY, COUNT, SUM
 
 ### 4. Ticket Check-In
 
 Check customers in using QR codes with duplicate prevention.
-
-* **SQL:** INSERT with validation to prevent multiple check-ins
+**SQL:** INSERT with validation to prevent multiple check-ins
 
 ### 5. Sales Reports
 
 Generate sales analytics including revenue, ticket counts, and check-in rates.
-
-* **SQL:** JOINs, GROUP BY, HAVING, multiple aggregates
+**SQL:** JOINs, GROUP BY, HAVING, multiple aggregates
 
 ### 6. Update Loyalty Tiers
 
 Batch update customer loyalty tiers based on purchase history.
-
-* **SQL:** UPDATE with subqueries, GROUP BY, HAVING
+**SQL:** UPDATE with subqueries, GROUP BY, HAVING
 
 ### 7. Manage Event Status
 
 Update event status with validation and before/after confirmation.
-
-* **SQL:** UPDATE with JOIN validation
+**SQL:** UPDATE with JOIN validation
 
 ## Project Structure
 
@@ -190,7 +184,3 @@ npm install
 ## Notes
 
 This repository is maintained as a portfolio-focused version of the project with a clean commit history.
-
-```
-
-
