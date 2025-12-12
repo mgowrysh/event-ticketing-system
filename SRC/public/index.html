@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Ticketing System - SE3309 Assignment 4</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎫 Event Ticketing System</h1>
+            <p class="subtitle">SE3309 Assignment 4 - Group 18</p>
+        </header>
+
+        <nav>
+            <button class="nav-btn active" onclick="showSection('browse')">Browse Events</button>
+            <button class="nav-btn" onclick="showSection('purchase')">Purchase Tickets</button>
+            <button class="nav-btn" onclick="showSection('history')">Purchase History</button>
+            <button class="nav-btn" onclick="showSection('checkin')">Check-In</button>
+            <button class="nav-btn" onclick="showSection('reports')">Sales Reports</button>
+            <button class="nav-btn" onclick="showSection('loyalty')">Loyalty Updates</button>
+            <button class="nav-btn" onclick="showSection('manage')">Manage Events</button>
+        </nav>
+
+        <!-- ===================================================================
+             FUNCTIONALITY 1: Browse Events
+             ================================================================ -->
+        <section id="browse" class="section active">
+            <h2>📅 Browse Events</h2>
+            <p class="description">View all events with filtering options. Uses JOIN between Event and Venue tables.</p>
+            
+            <div class="card">
+                <h3>Filter Events</h3>
+                <form id="browseForm" onsubmit="browseEvents(event)">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="filter-venue">Venue Name:</label>
+                            <input type="text" id="filter-venue" placeholder="e.g., Budweiser Gardens">
+                        </div>
+                        <div class="form-group">
+                            <label for="filter-status">Status:</label>
+                            <select id="filter-status">
+                                <option value="">All</option>
+                                <option value="SCHEDULED">Scheduled</option>
+                                <option value="CANCELLED">Cancelled</option>
+                                <option value="COMPLETED">Completed</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="filter-date-from">Date From:</label>
+                            <input type="date" id="filter-date-from">
+                        </div>
+                        <div class="form-group">
+                            <label for="filter-date-to">Date To:</label>
+                            <input type="date" id="filter-date-to">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn-primary">Search Events</button>
+                </form>
+            </div>
+
+            <div id="events-results" class="results"></div>
+        </section>
+
+        <!-- ===================================================================
+             FUNCTIONALITY 2: Purchase Tickets
+             ================================================================ -->
+        <section id="purchase" class="section">
+            <h2>🎟️ Purchase Tickets</h2>
+            <p class="description">Buy tickets for events. Uses transactions with INSERT and UPDATE operations.</p>
+            
+            <div class="card">
+                <h3>Customer Information</h3>
+                <form id="purchaseForm" onsubmit="purchaseTickets(event)">
+                    <div class="form-group">
+                        <label for="purchase-email">Customer Email: *</label>
+                        <input type="email" id="purchase-email" required placeholder="customer@example.com">
+                    </div>
+                    
+                    <h3>Event Selection</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="purchase-event">Event Name: *</label>
+                            <input type="text" id="purchase-event" required placeholder="e.g., Rock Festival">
+                        </div>
+                        <div class="form-group">
+                            <label for="purchase-date">Event Date: *</label>
+                            <input type="date" id="purchase-date" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="purchase-venue">Venue Name: *</label>
+                            <input type="text" id="purchase-venue" required placeholder="e.g., Budweiser Gardens">
+                        </div>
+                        <div class="form-group">
+                            <label for="purchase-address">Venue Address: *</label>
+                            <input type="text" id="purchase-address" required placeholder="e.g., 99 Dundas St, London, ON">
+                        </div>
+                    </div>
+                    
+                    <h3>Seat Selection</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="purchase-section">Section: *</label>
+                            <input type="text" id="purchase-section" required placeholder="e.g., A">
+                        </div>
+                        <div class="form-group">
+                            <label for="purchase-row">Row: *</label>
+                            <input type="text" id="purchase-row" required placeholder="e.g., 1">
+                        </div>
+                        <div class="form-group">
+                            <label for="purchase-number">Seat Number: *</label>
+                            <input type="text" id="purchase-number" required placeholder="e.g., 1">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="purchase-payment">Payment Method: *</label>
+                        <select id="purchase-payment" required>
+                            <option value="CREDIT_CARD">Credit Card</option>
+                            <option value="DEBIT_CARD">Debit Card</option>
+                            <option value="CASH">Cash</option>
+                        </select>
+                    </div>
+                    
+                    <button type="submit" class="btn-primary">Purchase Ticket</button>
+                </form>
+            </div>
+
+            <div id="purchase-results" class="results"></div>
+        </section>
+
+        <!-- ===================================================================
+             FUNCTIONALITY 3: Customer Purchase History
+             ================================================================ -->
+        <section id="history" class="section">
+            <h2>📋 Customer Purchase History</h2>
+            <p class="description">View all tickets purchased by a customer. Uses complex multi-table JOINs with aggregations.</p>
+            
+            <div class="card">
+                <h3>Lookup Customer</h3>
+                <form id="historyForm" onsubmit="viewHistory(event)">
+                    <div class="form-group">
+                        <label for="history-email">Customer Email: *</label>
+                        <input type="email" id="history-email" required placeholder="customer@example.com">
+                    </div>
+                    <button type="submit" class="btn-primary">View History</button>
+                </form>
+            </div>
+
+            <div id="history-results" class="results"></div>
+        </section>
+
+        <!-- ===================================================================
+             FUNCTIONALITY 4: Check-In Tickets
+             ================================================================ -->
+        <section id="checkin" class="section">
+            <h2>✅ Check-In Tickets</h2>
+            <p class="description">Check-in tickets at venue. Uses INSERT with validation to prevent duplicate check-ins.</p>
+            
+            <div class="card">
+                <h3>Scan Ticket</h3>
+                <form id="checkinForm" onsubmit="checkInTicket(event)">
+                    <div class="form-group">
+                        <label for="checkin-qr">QR Code: *</label>
+                        <input type="text" id="checkin-qr" required placeholder="e.g., QR001">
+                    </div>
+                    <div class="form-group">
+                        <label for="checkin-gate">Gate: *</label>
+                        <select id="checkin-gate" required>
+                            <option value="Gate A">Gate A</option>
+                            <option value="Gate B">Gate B</option>
+                            <option value="Gate C">Gate C</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn-primary">Check-In</button>
+                </form>
+            </div>
+
+            <div id="checkin-results" class="results"></div>
+        </section>
+
+        <!-- ===================================================================
+             FUNCTIONALITY 5: Sales Reports
+             ================================================================ -->
+        <section id="reports" class="section">
+            <h2>📊 Sales Reports</h2>
+            <p class="description">Generate comprehensive sales analytics. Uses GROUP BY with multiple aggregations and HAVING clause.</p>
+            
+            <div class="card">
+                <h3>Report Filters</h3>
+                <form id="reportsForm" onsubmit="generateReport(event)">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="report-event">Event Name (optional):</label>
+                            <input type="text" id="report-event" placeholder="Leave blank for all events">
+                        </div>
+                        <div class="form-group">
+                            <label for="report-min-tickets">Minimum Tickets Sold:</label>
+                            <input type="number" id="report-min-tickets" placeholder="e.g., 10" min="0">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn-primary">Generate Report</button>
+                </form>
+            </div>
+
+            <div id="reports-results" class="results"></div>
+        </section>
+
+        <!-- ===================================================================
+             FUNCTIONALITY 6: Update Loyalty Tiers
+             ================================================================ -->
+        <section id="loyalty" class="section">
+            <h2>⭐ Update Loyalty Tiers</h2>
+            <p class="description">Upgrade customer loyalty tiers based on purchase count. Uses UPDATE with subquery and aggregation.</p>
+            
+            <div class="card">
+                <h3>Tier Upgrade Criteria</h3>
+                <form id="loyaltyForm" onsubmit="updateLoyalty(event)">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="loyalty-min-purchases">Minimum Purchases: *</label>
+                            <input type="number" id="loyalty-min-purchases" required min="1" placeholder="e.g., 3">
+                        </div>
+                        <div class="form-group">
+                            <label for="loyalty-tier">New Tier: *</label>
+                            <select id="loyalty-tier" required>
+                                <option value="Bronze">Bronze</option>
+                                <option value="Silver">Silver</option>
+                                <option value="Gold">Gold</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn-primary">Update Tiers</button>
+                </form>
+            </div>
+
+            <div id="loyalty-results" class="results"></div>
+        </section>
+
+        <!-- ===================================================================
+             FUNCTIONALITY 7: Manage Event Status
+             ================================================================ -->
+        <section id="manage" class="section">
+            <h2>⚙️ Manage Event Status</h2>
+            <p class="description">Update event status (Scheduled/Cancelled/Completed). Uses UPDATE with validation.</p>
+            
+            <div class="card">
+                <h3>Event Selection</h3>
+                <form id="manageForm" onsubmit="updateEventStatus(event)">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="manage-event">Event Name: *</label>
+                            <input type="text" id="manage-event" required placeholder="e.g., Rock Festival">
+                        </div>
+                        <div class="form-group">
+                            <label for="manage-date">Event Date: *</label>
+                            <input type="date" id="manage-date" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="manage-venue">Venue Name: *</label>
+                            <input type="text" id="manage-venue" required placeholder="e.g., Budweiser Gardens">
+                        </div>
+                        <div class="form-group">
+                            <label for="manage-address">Venue Address: *</label>
+                            <input type="text" id="manage-address" required placeholder="e.g., 99 Dundas St, London, ON">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="manage-status">New Status: *</label>
+                        <select id="manage-status" required>
+                            <option value="SCHEDULED">Scheduled</option>
+                            <option value="CANCELLED">Cancelled</option>
+                            <option value="COMPLETED">Completed</option>
+                        </select>
+                    </div>
+                    
+                    <button type="submit" class="btn-primary">Update Status</button>
+                </form>
+            </div>
+
+            <div id="manage-results" class="results"></div>
+        </section>
+
+        <footer>
+            <p>SE3309 Database Management Systems - Assignment 4</p>
+            <p>Event Ticketing Web Application - Group 18</p>
+        </footer>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
